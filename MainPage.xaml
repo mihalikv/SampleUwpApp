@@ -1,0 +1,40 @@
+﻿<Page
+    x:Class="App1.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:App1"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Page.Resources>
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Page.Resources>
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <ProgressRing HorizontalAlignment="Center" Grid.ColumnSpan="6" Margin="0,0,0,0" VerticalAlignment="Center" IsActive="{Binding Sections.IsNotCompleted}" Height="70" Width="70"/>
+        <Pivot Name="MainPivot" Grid.ColumnSpan="6" Visibility="{Binding Sections.IsSuccessfullyCompleted, Converter={StaticResource BooleanToVisibilityConverter}}" SelectionChanged="MainPivot_SelectionChanged" Margin="0,200,0,0" ItemsSource="{Binding Sections.Result}">
+            <Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Header}" Margin="20,0"/>
+                </DataTemplate>
+            </Pivot.HeaderTemplate>
+            <Pivot.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <ProgressBar HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Visibility="{Binding Content.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}" IsIndeterminate="True" Width="100"/>
+                        <WebView local:StringWebViewExtension.HTML="{Binding Content.Result}"/>
+                    </Grid>
+                </DataTemplate>
+            </Pivot.ItemTemplate>
+        </Pivot>
+        
+        <Image Name="Logo" Source="Assets/logo_nase2.png" Grid.Column="2" Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="0,50,0,0" />
+    </Grid>
+</Page>
